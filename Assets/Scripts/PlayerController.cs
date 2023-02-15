@@ -7,6 +7,11 @@ public class PlayerController : MonoBehaviour
     bool isMoving;
     [SerializeField] Animator animator;
 
+    void Start()
+    {
+        transform.position = new Vector3(0, 0, 0);
+    }
+
     void Update()
     {
         if (isMoving == false)
@@ -21,31 +26,33 @@ public class PlayerController : MonoBehaviour
 
             StartCoroutine(Move(new Vector2(x, y)));
 
-            animator.SetBool("isMoving",isMoving);
-        }
 
-        if (Input.GetAxisRaw("Horizontal") != 0)
-        {
-            if (Input.GetAxisRaw("Horizontal") > 0)
+            if (Input.GetAxisRaw("Horizontal") != 0)
             {
-                animator.SetFloat("InputX", 1f);
-                animator.SetFloat("InputY", 0);
+                if (Input.GetAxisRaw("Horizontal") > 0)
+                {
+                    animator.SetFloat("InputX", 1f);
+                    animator.SetFloat("InputY", 0);
+                }
+                else
+                {
+                    animator.SetFloat("InputX", -1f);
+                    animator.SetFloat("InputY", 0);
+                }
+            }
+            else if (Input.GetAxisRaw("Vertical") > 0)
+            {
+                animator.SetFloat("InputX", 0);
+                animator.SetFloat("InputY", 1);
             }
             else
             {
-                animator.SetFloat("InputX", -1f);
-                animator.SetFloat("InputY", 0);
+                animator.SetFloat("InputX", 0);
+                animator.SetFloat("InputY", -1);
             }
-        }
-        else if (Input.GetAxisRaw("Vertical") > 0)
-        {
-            animator.SetFloat("InputX", 0);
-            animator.SetFloat("InputY", 1);
-        }
-        else
-        {
-            animator.SetFloat("InputX", 0);
-            animator.SetFloat("InputY", -1);
+
+            animator.SetBool("isMoving",isMoving);
+
         }
     }
 
