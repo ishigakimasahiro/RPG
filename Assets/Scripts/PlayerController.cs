@@ -7,6 +7,8 @@ public class PlayerController : MonoBehaviour
     bool isMoving;
     [SerializeField] Animator animator;
 
+    [SerializeField] LayerMask longGrassLayer;
+
     void Start()
     {
         transform.position = new Vector3(0.5f, 0.5f, 0);
@@ -67,6 +69,18 @@ public class PlayerController : MonoBehaviour
         }
         transform.position = targetPos;
         isMoving = false;
+        CheckForEncounters();
+    }
+
+    void CheckForEncounters()
+    {
+        if(Physics2D.OverlapCircle(transform.position,0.2f,longGrassLayer))
+        {
+            if(Random.Range(0,100)<10)
+            {
+                Debug.Log("ƒ‚ƒ“ƒXƒ^[‚É‘˜‹ö");
+            }
+        }
     }
 
 }

@@ -15,8 +15,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - SolidObjects
+  - LongGrass
   - 
   - 
   - 
@@ -43,6 +43,9 @@ TagManager:
     locked: 0
   - name: Map
     uniqueID: 3467098537
+    locked: 0
+  - name: Solid
+    uniqueID: 3824384155
     locked: 0
   - name: Chara
     uniqueID: 885575167
