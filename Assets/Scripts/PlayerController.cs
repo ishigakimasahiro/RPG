@@ -76,7 +76,7 @@ public class PlayerController : MonoBehaviour
     {
         if(Physics2D.OverlapCircle(transform.position,0.2f,longGrassLayer))
         {
-            if(Random.Range(0,100)<10)
+            if(Random.Range(0,100)<6)
             {
                 Debug.Log("ƒ‚ƒ“ƒXƒ^[‚É‘˜‹ö");
             }
