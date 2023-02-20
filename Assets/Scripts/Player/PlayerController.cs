@@ -23,6 +23,14 @@ public class PlayerController : MonoBehaviour
     private float playerSpeed;
     public float inputSpeed;
 
+    [SerializeField] GameObject bullet;
+    [SerializeField] GameObject firePosition;
+
+    float cooldownTimer = 0;
+    public float timeInterval = 0.2f;
+
+    [SerializeField] ObjectPoolCtrl objectPoolCtrl;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -49,8 +57,10 @@ public class PlayerController : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Space))
         {
-
+            Fire();
         }
+
+        cooldownTimer -= Time.deltaTime;
     }
     void FixedUpdate()
     {
@@ -98,6 +108,22 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetFloat("InputX", 0);
             animator.SetFloat("InputY", -1);
+        }
+    }
+
+    private void Fire()
+    {
+        if(cooldownTimer<=0)
+        {
+            GameObject obj = objectPoolCtrl.GetPooledObject();
+            if(obj==null)
+            {
+                return;
+            }
+            obj.transform.position = firePosition.transform.position;
+            obj.transform.rotation = firePosition.transform.rotation;
+            obj.SetActive(true);
+            cooldownTimer = timeInterval;
         }
     }
 
