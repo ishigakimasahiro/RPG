@@ -4,6 +4,15 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    enum PlayerType
+    {
+        STOP,
+        LEFT,
+        RIGHT
+    }
+
+    PlayerType playerType = PlayerType.STOP;
+
     bool isMoving;
     [SerializeField] Animator animator;
 
@@ -11,7 +20,7 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rb;
     private float x_val;
-    private float speed;
+    private float playerSpeed;
     public float inputSpeed;
 
     void Start()
@@ -21,33 +30,51 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         x_val = Input.GetAxis("Horizontal");
+
+        //待機
+        if (x_val == 0)
+        {
+            playerType = PlayerType.STOP;
+        }
+        //右に移動
+        else if (x_val > 0)
+        {
+            playerType = PlayerType.RIGHT;
+        }
+        //左に移動
+        else if (x_val < 0)
+        {
+            playerType = PlayerType.LEFT;
+        }
+
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+
+        }
     }
     void FixedUpdate()
     {
         isMoving = false;
 
-        //待機
-        if (x_val == 0)
+        switch(playerType)
         {
-            speed = 0;
-        }
-        //右に移動
-        else if (x_val > 0)
-        {
-            speed = inputSpeed;
-            MoveSet();
-        }
-        //左に移動
-        else if (x_val < 0)
-        {
-            speed = inputSpeed * -1;
-            MoveSet();
+            case PlayerType.STOP:
+                playerSpeed = 0;
+                break;
+            case PlayerType.RIGHT:
+                playerSpeed = inputSpeed;
+                MoveSet();
+                break;
+            case PlayerType.LEFT:
+                playerSpeed = inputSpeed * -1;
+                MoveSet();
+                break;
         }
 
         // キャラクターを移動 Vextor2(x軸スピード、y軸スピード(元のまま))
-        rb.velocity = new Vector2(speed, rb.velocity.y);
+        rb.velocity = new Vector2(playerSpeed, rb.velocity.y);
 
-        CheckForEncounters();
+        animator.SetBool("isMoving", isMoving);
     }
 
     void MoveSet()
@@ -67,18 +94,10 @@ public class PlayerController : MonoBehaviour
                 animator.SetFloat("InputY", 0);
             }
         }
-
-        animator.SetBool("isMoving", isMoving);
-    }
-
-    void CheckForEncounters()
-    {
-        if(Physics2D.OverlapCircle(transform.position,0.2f, SolidObjectsLayer))
+        else
         {
-            if(Random.Range(0,100)<6)
-            {
-                Debug.Log("モンスターに遭遇");
-            }
+            animator.SetFloat("InputX", 0);
+            animator.SetFloat("InputY", -1);
         }
     }
 
